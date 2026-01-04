@@ -95,6 +95,28 @@ const mainLoop = async (providers: CounterProviders, rli: Interface): Promise<vo
         }
         break;
       case '4':
+        {
+          const amountStr = await rli.question('Enter amount to decrement: ');
+          try {
+            const amount = BigInt(amountStr);
+            await api.decrement(counterContract, amount);
+          } catch (e) {
+            logger.error(`Invalid value: ${e}`);
+          }
+        }
+        break;
+      case '5':
+        {
+          const valStr = await rli.question('Enter new value: ');
+          try {
+            const val = BigInt(valStr);
+            await api.setValue(counterContract, val);
+          } catch (e) {
+            logger.error(`Invalid value: ${e}`);
+          }
+        }
+        break;
+      case '6':
         logger.info('Exiting...');
         return;
       default:

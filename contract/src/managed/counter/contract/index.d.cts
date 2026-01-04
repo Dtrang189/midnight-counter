@@ -5,6 +5,8 @@ export type Witnesses<T> = {
 
 export type ImpureCircuits<T> = {
   increment(context: __compactRuntime.CircuitContext<T>): __compactRuntime.CircuitResults<T, []>;
+  decrement(context: __compactRuntime.CircuitContext<T>, amount_0: bigint): __compactRuntime.CircuitResults<T, []>;
+  set_value(context: __compactRuntime.CircuitContext<T>, val_0: bigint): __compactRuntime.CircuitResults<T, []>;
   increment_private(context: __compactRuntime.CircuitContext<T>,
                     privateCounter_0: bigint): __compactRuntime.CircuitResults<T, [bigint]>;
 }
@@ -14,6 +16,8 @@ export type PureCircuits = {
 
 export type Circuits<T> = {
   increment(context: __compactRuntime.CircuitContext<T>): __compactRuntime.CircuitResults<T, []>;
+  decrement(context: __compactRuntime.CircuitContext<T>, amount_0: bigint): __compactRuntime.CircuitResults<T, []>;
+  set_value(context: __compactRuntime.CircuitContext<T>, val_0: bigint): __compactRuntime.CircuitResults<T, []>;
   increment_private(context: __compactRuntime.CircuitContext<T>,
                     privateCounter_0: bigint): __compactRuntime.CircuitResults<T, [bigint]>;
 }

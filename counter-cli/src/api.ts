@@ -116,6 +116,26 @@ export const incrementPrivate = async (
   return currentValue + 1n;
 };
 
+export const decrement = async (
+  counterContract: DeployedCounterContract,
+  amount: bigint,
+): Promise<FinalizedTxData> => {
+  logger.info(`Decrementing by ${amount}...`);
+  const finalizedTxData = await counterContract.callTx.decrement(amount);
+  logger.info(`Transaction ${finalizedTxData.public.txId} added in block ${finalizedTxData.public.blockHeight}`);
+  return finalizedTxData.public;
+};
+
+export const setValue = async (
+  counterContract: DeployedCounterContract,
+  value: bigint,
+): Promise<FinalizedTxData> => {
+  logger.info(`Setting value to ${value}...`);
+  const finalizedTxData = await counterContract.callTx.set_value(value);
+  logger.info(`Transaction ${finalizedTxData.public.txId} added in block ${finalizedTxData.public.blockHeight}`);
+  return finalizedTxData.public;
+};
+
 export const displayCounterValue = async (
   providers: CounterProviders,
   counterContract: DeployedCounterContract,

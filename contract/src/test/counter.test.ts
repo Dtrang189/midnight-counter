@@ -50,4 +50,19 @@ describe("Counter smart contract", () => {
     const result = simulator.incrementPrivate(10n);
     expect(result).toEqual(11n);
   });
+
+  it("decrements the counter correctly", () => {
+    const simulator = new CounterSimulator();
+    // Increment first to avoid potential underflow (though Uint<64> might wrap, better to be safe)
+    simulator.increment();
+    simulator.increment();
+    const state = simulator.decrement(1n);
+    expect(state.round).toEqual(1n);
+  });
+
+  it("sets the counter value correctly", () => {
+    const simulator = new CounterSimulator();
+    const state = simulator.setValue(42n);
+    expect(state.round).toEqual(42n);
+  });
 });

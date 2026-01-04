@@ -18,15 +18,24 @@ pragma language_version >= 0.16 && <= 0.18;
 import CompactStandardLibrary;
 
 // public state
-export ledger round: Counter;
+export ledger round: Uint<64>;
 
 // transition function changing public state
 export circuit increment(): [] {
-  round.increment(1);
+  round = round + 1 as Uint<64>;
+}
+
+export circuit decrement(amount: Uint<64>): [] {
+  round = round - disclose(amount) as Uint<64>;
+}
+
+export circuit set_value(val: Uint<64>): [] {
+  round = disclose(val);
 }
 
 // Returns the incremented private value
 export circuit increment_private(privateCounter: Uint<64>): [Uint<64>] {
-  round.increment(0);
+  // Use a dummy write to force impurity/transaction
+  round = round; 
   return [privateCounter + 1 as Uint<64>];
 }

@@ -76,4 +76,20 @@ export class CounterSimulator {
     this.circuitContext = calculation.context;
     return calculation.result[0];
   }
+
+  public decrement(amount: bigint): Ledger {
+    this.circuitContext = this.contract.impureCircuits.decrement(
+      this.circuitContext,
+      amount
+    ).context;
+    return ledger(this.circuitContext.transactionContext.state);
+  }
+
+  public setValue(val: bigint): Ledger {
+    this.circuitContext = this.contract.impureCircuits.set_value(
+      this.circuitContext,
+      val
+    ).context;
+    return ledger(this.circuitContext.transactionContext.state);
+  }
 }
