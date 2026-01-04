@@ -17,29 +17,45 @@ const _descriptor_0 = new __compactRuntime.CompactTypeUnsignedInteger(65535n, 2)
 
 const _descriptor_1 = new __compactRuntime.CompactTypeUnsignedInteger(18446744073709551615n, 8);
 
-const _descriptor_2 = new __compactRuntime.CompactTypeBoolean();
-
-const _descriptor_3 = new __compactRuntime.CompactTypeBytes(32);
-
-class _ContractAddress_0 {
+class _tuple_0 {
   alignment() {
-    return _descriptor_3.alignment();
+    return _descriptor_1.alignment();
   }
   fromValue(value_0) {
-    return {
-      bytes: _descriptor_3.fromValue(value_0)
-    }
+    return [
+      _descriptor_1.fromValue(value_0)
+    ]
   }
   toValue(value_0) {
-    return _descriptor_3.toValue(value_0.bytes);
+    return _descriptor_1.toValue(value_0[0]);
   }
 }
 
-const _descriptor_4 = new _ContractAddress_0();
+const _descriptor_2 = new _tuple_0();
 
-const _descriptor_5 = new __compactRuntime.CompactTypeUnsignedInteger(255n, 1);
+const _descriptor_3 = new __compactRuntime.CompactTypeBoolean();
 
-const _descriptor_6 = new __compactRuntime.CompactTypeUnsignedInteger(340282366920938463463374607431768211455n, 16);
+const _descriptor_4 = new __compactRuntime.CompactTypeBytes(32);
+
+class _ContractAddress_0 {
+  alignment() {
+    return _descriptor_4.alignment();
+  }
+  fromValue(value_0) {
+    return {
+      bytes: _descriptor_4.fromValue(value_0)
+    }
+  }
+  toValue(value_0) {
+    return _descriptor_4.toValue(value_0.bytes);
+  }
+}
+
+const _descriptor_5 = new _ContractAddress_0();
+
+const _descriptor_6 = new __compactRuntime.CompactTypeUnsignedInteger(255n, 1);
+
+const _descriptor_7 = new __compactRuntime.CompactTypeUnsignedInteger(340282366920938463463374607431768211455n, 16);
 
 class Contract {
   witnesses;
@@ -75,9 +91,48 @@ class Contract {
         const result_0 = this._increment_0(context, partialProofData);
         partialProofData.output = { value: [], alignment: [] };
         return { result: result_0, context: context, proofData: partialProofData };
+      },
+      increment_private: (...args_1) => {
+        if (args_1.length !== 2) {
+          throw new __compactRuntime.CompactError(`increment_private: expected 2 arguments (as invoked from Typescript), received ${args_1.length}`);
+        }
+        const contextOrig_0 = args_1[0];
+        const privateCounter_0 = args_1[1];
+        if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.originalState != undefined && contextOrig_0.transactionContext != undefined)) {
+          __compactRuntime.type_error('increment_private',
+                                      'argument 1 (as invoked from Typescript)',
+                                      'counter.compact line 29 char 1',
+                                      'CircuitContext',
+                                      contextOrig_0)
+        }
+        if (!(typeof(privateCounter_0) === 'bigint' && privateCounter_0 >= 0n && privateCounter_0 <= 18446744073709551615n)) {
+          __compactRuntime.type_error('increment_private',
+                                      'argument 1 (argument 2 as invoked from Typescript)',
+                                      'counter.compact line 29 char 1',
+                                      'Uint<0..18446744073709551615>',
+                                      privateCounter_0)
+        }
+        const context = { ...contextOrig_0 };
+        const partialProofData = {
+          input: {
+            value: _descriptor_1.toValue(privateCounter_0),
+            alignment: _descriptor_1.alignment()
+          },
+          output: undefined,
+          publicTranscript: [],
+          privateTranscriptOutputs: []
+        };
+        const result_0 = this._increment_private_0(context,
+                                                   partialProofData,
+                                                   privateCounter_0);
+        partialProofData.output = { value: _descriptor_2.toValue(result_0), alignment: _descriptor_2.alignment() };
+        return { result: result_0, context: context, proofData: partialProofData };
       }
     };
-    this.impureCircuits = { increment: this.circuits.increment };
+    this.impureCircuits = {
+      increment: this.circuits.increment,
+      increment_private: this.circuits.increment_private
+    };
   }
   initialState(...args_0) {
     if (args_0.length !== 1) {
@@ -98,6 +153,7 @@ class Contract {
     stateValue_0 = stateValue_0.arrayPush(__compactRuntime.StateValue.newNull());
     state_0.data = stateValue_0;
     state_0.setOperation('increment', new __compactRuntime.ContractOperation());
+    state_0.setOperation('increment_private', new __compactRuntime.ContractOperation());
     const context = {
       originalState: state_0,
       currentPrivateState: constructorContext_0.initialPrivateState,
@@ -114,8 +170,8 @@ class Contract {
                     partialProofData,
                     [
                      { push: { storage: false,
-                               value: __compactRuntime.StateValue.newCell({ value: _descriptor_5.toValue(0n),
-                                                                            alignment: _descriptor_5.alignment() }).encode() } },
+                               value: __compactRuntime.StateValue.newCell({ value: _descriptor_6.toValue(0n),
+                                                                            alignment: _descriptor_6.alignment() }).encode() } },
                      { push: { storage: true,
                                value: __compactRuntime.StateValue.newCell({ value: _descriptor_1.toValue(0n),
                                                                             alignment: _descriptor_1.alignment() }).encode() } },
@@ -136,8 +192,8 @@ class Contract {
                               pushPath: true,
                               path: [
                                      { tag: 'value',
-                                       value: { value: _descriptor_5.toValue(0n),
-                                                alignment: _descriptor_5.alignment() } }] } },
+                                       value: { value: _descriptor_6.toValue(0n),
+                                                alignment: _descriptor_6.alignment() } }] } },
                      { addi: { immediate: parseInt(__compactRuntime.valueToBigInt(
                                             { value: _descriptor_0.toValue(tmp_0),
                                               alignment: _descriptor_0.alignment() }
@@ -145,6 +201,30 @@ class Contract {
                                           )) } },
                      { ins: { cached: true, n: 1 } }]);
     return [];
+  }
+  _increment_private_0(context, partialProofData, privateCounter_0) {
+    const tmp_0 = 0n;
+    Contract._query(context,
+                    partialProofData,
+                    [
+                     { idx: { cached: false,
+                              pushPath: true,
+                              path: [
+                                     { tag: 'value',
+                                       value: { value: _descriptor_6.toValue(0n),
+                                                alignment: _descriptor_6.alignment() } }] } },
+                     { addi: { immediate: parseInt(__compactRuntime.valueToBigInt(
+                                            { value: _descriptor_0.toValue(tmp_0),
+                                              alignment: _descriptor_0.alignment() }
+                                              .value
+                                          )) } },
+                     { ins: { cached: true, n: 1 } }]);
+    return [((t1) => {
+              if (t1 > 18446744073709551615n) {
+                throw new __compactRuntime.CompactError('counter.compact line 31 char 11: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 18446744073709551615');
+              }
+              return t1;
+            })(privateCounter_0 + 1n)];
   }
   static _query(context, partialProofData, prog) {
     var res;
@@ -194,8 +274,8 @@ function ledger(state) {
                                                                pushPath: false,
                                                                path: [
                                                                       { tag: 'value',
-                                                                        value: { value: _descriptor_5.toValue(0n),
-                                                                                 alignment: _descriptor_5.alignment() } }] } },
+                                                                        value: { value: _descriptor_6.toValue(0n),
+                                                                                 alignment: _descriptor_6.alignment() } }] } },
                                                       { popeq: { cached: true,
                                                                  result: undefined } }]).value);
     }

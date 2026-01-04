@@ -10,6 +10,28 @@
         "types": [
         ]
       }
+    },
+    {
+      "name": "increment_private",
+      "pure": false,
+      "arguments": [
+        {
+          "name": "privateCounter",
+          "type": {
+            "type-name": "Uint",
+            "maxval": 18446744073709551615
+          }
+        }
+      ],
+      "result-type": {
+        "type-name": "Tuple",
+        "types": [
+          {
+            "type-name": "Uint",
+            "maxval": 18446744073709551615
+          }
+        ]
+      }
     }
   ],
   "witnesses": [

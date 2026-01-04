@@ -106,6 +106,16 @@ export const increment = async (counterContract: DeployedCounterContract): Promi
   return finalizedTxData.public;
 };
 
+export const incrementPrivate = async (
+  counterContract: DeployedCounterContract,
+  currentValue: bigint,
+): Promise<bigint> => {
+  logger.info(`Incrementing private counter from ${currentValue}...`);
+  const finalizedTxData = await counterContract.callTx.increment_private(currentValue);
+  logger.info(`Transaction ${finalizedTxData.public.txId} added in block ${finalizedTxData.public.blockHeight}`);
+  return currentValue + 1n;
+};
+
 export const displayCounterValue = async (
   providers: CounterProviders,
   counterContract: DeployedCounterContract,

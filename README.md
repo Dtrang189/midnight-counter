@@ -1,6 +1,6 @@
 # Counter DApp
 
-[![Generic badge](https://img.shields.io/badge/Compact%20Compiler-0.25.0-1abc9c.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/TypeScript-5.8.3-blue.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/Compact%20Compiler-0.26.0-1abc9c.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/TypeScript-5.8.3-blue.svg)](https://shields.io/)
 
 A Midnight smart contract example demonstrating counter functionality with zero-knowledge proofs on testnet.
 
@@ -63,7 +63,7 @@ source $HOME/.local/bin/env.fish              # fish
 #### Update to the version required by this project (optional)
 
 ```
-compact update 0.25.0
+compact update 0.26.0
 ```
 
 #### Verify installation
@@ -72,7 +72,7 @@ compact update 0.25.0
 compact compile --version
 ```
 
-Expected output: `0.25.0`.
+Expected output: `0.26.0`.
 
 > If command not found: Restart your terminal and try the `source` command again.
 
@@ -93,8 +93,9 @@ cd contract && npm run compact
 Expected output:
 
 ```
-Compiling 1 circuits:
+Compiling 2 circuits:
   circuit "increment" (k=10, rows=29)
+  circuit "increment_private" (k=10, rows=86)
 ```
 
 Note: First time may download zero-knowledge parameters (~500MB). This is normal and happens once.
@@ -211,6 +212,10 @@ You can now:
 
 - **Increment** the counter (submits a transaction to testnet)
 - **Display** current counter value (queries the blockchain)
+- **Increment Private** counter:
+  - Enter the current private value (e.g., `0` for the first time).
+  - The CLI will generate a ZK proof that you incremented the private value.
+  - Note: This contract does not persist private state on-chain in this version; it relies on the user providing the previous value as an input witness.
 - **Exit** when done
 
 Each increment creates a real transaction on Midnight Testnet.

@@ -67,4 +67,13 @@ export class CounterSimulator {
     ).context;
     return ledger(this.circuitContext.transactionContext.state);
   }
+
+  public incrementPrivate(currentVal: bigint): bigint {
+    const calculation = this.contract.impureCircuits.increment_private(
+      this.circuitContext,
+      currentVal
+    );
+    this.circuitContext = calculation.context;
+    return calculation.result[0];
+  }
 }

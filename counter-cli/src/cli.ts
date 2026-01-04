@@ -42,7 +42,8 @@ const MAIN_LOOP_QUESTION = `
 You can do one of the following:
   1. Increment
   2. Display current counter value
-  3. Exit
+  3. Increment Private
+  4. Exit
 Which would you like to do? `;
 
 const join = async (providers: CounterProviders, rli: Interface): Promise<DeployedCounterContract> => {
@@ -82,6 +83,18 @@ const mainLoop = async (providers: CounterProviders, rli: Interface): Promise<vo
         await api.displayCounterValue(providers, counterContract);
         break;
       case '3':
+        {
+          const currentValStr = await rli.question('Enter current private value: ');
+          try {
+            const currentVal = BigInt(currentValStr);
+            const newVal = await api.incrementPrivate(counterContract, currentVal);
+            logger.info(`New private value: ${newVal}`);
+          } catch (e) {
+            logger.error(`Invalid value: ${e}`);
+          }
+        }
+        break;
+      case '4':
         logger.info('Exiting...');
         return;
       default:
